@@ -4,7 +4,7 @@ import HomePage from './pages/homepage/homepagecomponent';
 import './pages/homepage/homepage.styles.scss';
 import { Switch, Route, Link }  from 'react-router-dom';
 import ShopPage from './pages/shop/shop.component';
-
+import Header from './components/header/header.component';
 
 // <Link to = '/'> HomePage </Link>   link helps me to take to the specific page, like this take me to the home page if i define in Hatspage
 
@@ -15,24 +15,23 @@ import ShopPage from './pages/shop/shop.component';
 //   </div>
 // );
 
-
-
 // Route has certain parameters like exact, path and component^
 // exact helps you to render the exact path
 
 // Switch provides more component to the routing
+
 function App() {
+
   return (
     
     <div>
+      <Header/>
       <Switch> 
-
         <Route exact path='/' component= {HomePage} />
         <Route path='/shop' component= {ShopPage} />
-
-
       </Switch>
     </div>
+
   );
 }
 

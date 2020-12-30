@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './collection-item.styles.scss';
-import {withRouter} from 'react-router-dom';
+
 
 
 const CollectionItem = ({ id, name, price, imageUrl }) => (
