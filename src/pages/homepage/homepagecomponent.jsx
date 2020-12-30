@@ -9,8 +9,10 @@ const HomePage = () => (
 // then add 2 container we are talking about container of the menu and then the actual 
 // -menu items 
 // inside the menu item there is another content container
+
+// here we can pass the prop history into our directory, then pass that history into our menu item
 <div className = 'HomePage'>
-    <Directory />
+    <Directory/>
 </div>
 
 );
