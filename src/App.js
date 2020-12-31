@@ -1,3 +1,7 @@
+
+
+
+
 import React from 'react';
 import './App.css';
 import HomePage from './pages/homepage/homepagecomponent';
@@ -8,64 +12,61 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
 
 
-import { auth } from './firebase/firebase.utils'; // used to authenticate user that logged in
+import { auth, createUserProfileDocument } from './firebase/firebase.utils'; // used to authenticate user that logged in
 
+class App extends React.Component {
+  constructor() {
+    super();
 
-// <Link to = '/'> HomePage </Link>   link helps me to take to the specific page, like this take me to the home page if i define in Hatspage
-
-// const Hatspage = () => (
-//   <div>
-  
-//   <h1>Hats Page</h1>
-//   </div>
-// );
-
-// Route has certain parameters like exact, path and component^
-// exact helps you to render the exact path
-
-// Switch provides more component to the routing
-
-class App extends React.Component{
-
-constructor(){
-  super();
-  
-  this.state = {
-    currentUser: null
-  };
-}
+    this.state = {
+      currentUser: null
+    };
+  }
 // componentDidMount () is an open subscription we also require the close subscription to avoid the leakage
-
-unsubscribeFromAuth = null; 
+  unsubscribeFromAuth = null;
 // how we fetch data before, which is used to fire a fetch data to the backend
 // its like when some body signs in and signs out we want to aware that somebody signs in 
+  componentDidMount() {
+      // this.setState({currentUser: user});
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
 
-componentDidMount () {
- this.unsubscribeFromAuth =  auth.onAuthStateChanged ( user => { 
-    this.setState({currentUser: user});
-    console.log(user);
-  });
-}
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
 
-componentWillUnmount(){
-  this.unsubscribeFromAuth(); // that will close the subscription
-}
+          console.log(this.state);
+        });
+      }
 
-render (){
-//function App() {
-  return (
-    
-    <div>
-      <Header currentUser=  {this.state.currentUser}/>
-      <Switch> 
-        <Route exact path='/' component= {HomePage} />
-        <Route path='/shop' component= {ShopPage} />
-        <Route path='/signin' component= {SignInAndSignUpPage} />
-      </Switch>
-    </div>
+      this.setState({ currentUser: userAuth });
+    });
+  }
 
-  );
-}
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();// that will close the subscription
+  }
+// Route has certain parameters like exact, path and component^
+// exact helps you to render the exact path
+// Switch provides more component to the routing
+  render() {
+    //function App() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/shop' component={ShopPage} />
+          <Route path='/signin' component={SignInAndSignUpPage} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
