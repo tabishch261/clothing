@@ -77,9 +77,9 @@ const mapStateToProps = ({ user }) => ({
   currentUser: user.currentUser
 });
 
-// here app does not need  user any more 
 
-// we pass 1st argument as null bcz we dont need any state to props from our reducer to currentuser here
+
+// we pass 1st argument as null if we dont need any state to props from our reducer to currentuser here
 // The 2n d argument is the mapDispatchToProps
 
 export default connect(
