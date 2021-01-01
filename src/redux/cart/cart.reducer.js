@@ -1,6 +1,7 @@
 import CartActionTypes from './cart.types';
     const INITIAL_STATE = {
-        hidden: true  // we wnt to hide the dropdown when we first comes to website
+        hidden: true,  // we wnt to hide the dropdown when we first comes to website
+        cartItems: []  // add the items into the array when ever user click
       };
 
       const cartReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,11 @@ import CartActionTypes from './cart.types';
               ...state,
               hidden: !state.hidden
             };
+          case CartActionTypes.ADD_ITEM:
+            return {
+              ...state,
+              cartItems: [...state.cartItems, action.payload] // first we add the existing cart-items then we add the action payload to the end of this array
+            }; 
           default:
             return state;
         }
