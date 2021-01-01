@@ -1,4 +1,4 @@
-
+import {UserActionTypes} from './user.types';
 // initial state is empty as its the start
     const INITIAL_STATE = {
         currentUser: null
@@ -7,7 +7,7 @@
 // Reducer gets every single action that gets fired
       const userReducer = (state = INITIAL_STATE, action) => {
         switch (action.type) { // switch is nothing but the big if statement
-          case 'SET_CURRENT_USER':// Whenever 'SET_CURRENT_USER' user is the action type that gets fired, we return every thing else
+          case UserActionTypes.SET_CURRENT_USER:// Whenever 'SET_CURRENT_USER' user is the action type that gets fired, we return every thing else
             return { //  - on the state , and we set the value which is nothing but the payload 
               ...state,
               currentUser: action.payload

@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 import HomePage from './pages/homepage/homepagecomponent';
 import './pages/homepage/homepage.styles.scss';
-import { Switch, Route, Link }  from 'react-router-dom';
+import { Switch, Route, Link , Redirect}  from 'react-router-dom';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
@@ -56,7 +56,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/signin' component={SignInAndSignUpPage} />
+          <Route path='/signin' render={ () => this.props.currentUser ? (< Redirect to= '/'/>) : (<SignInAndSignUpPage/>) } /> 
         </Switch>
       </div>
     );
@@ -72,7 +72,10 @@ const mapDispatchToProps = dispatch => ({
   
   }); 
 
-
+// to user current user above for functionality that if it already signed in then it redirects to home page  
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
 
 // here app does not need  user any more 
 
@@ -80,6 +83,6 @@ const mapDispatchToProps = dispatch => ({
 // The 2n d argument is the mapDispatchToProps
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);
