@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils'; 
 
+import { connect } from  'react-redux'; // connect is the higher order component that let our component to have access things related to redux
 
 const Header = ({ currentUser }) => (
 
@@ -14,13 +15,25 @@ const Header = ({ currentUser }) => (
                 <Link className='option' to= '/shop'> Contact </Link>
                 {
                   currentUser?
-                  <div className = 'option' onClick={() => auth.signOut()} > Sign Out </div>
+                  (<div className = 'option' onClick={() => auth.signOut()} > Sign Out </div>)
                   :  
-                  <Link className = 'option' to='/signin'> </Link>
+                  (<Link className = 'option' to='/signin'> </Link>)
                 }
             </div >
     </div>
 
 );
 
-export default Header;
+// the state is the root reducer
+
+const mapStateToProps = state => ({
+    currentUser: state.user.currentUser
+});
+
+
+// here we pass the two functions the 2nd one will be the optional
+// connect is the function that allows us to access the state
+
+// now we are getting value of the currentuser from reducer being passed to currentuser here
+// Connect we use any where we need properties from our reducers
+export default connect(mapStateToProps)(Header);

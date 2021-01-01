@@ -1,7 +1,4 @@
 
-
-
-
 import React from 'react';
 import './App.css';
 import HomePage from './pages/homepage/homepagecomponent';
@@ -11,40 +8,37 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
 
+import { setCurrentUser } from './redux/user/user.actions'
+import { connect } from 'react-redux';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'; // used to authenticate user that logged in
 
 class App extends React.Component {
-  constructor() {
-    super();
 
-    this.state = {
-      currentUser: null
-    };
-  }
+
 // componentDidMount () is an open subscription we also require the close subscription to avoid the leakage
   unsubscribeFromAuth = null;
 // how we fetch data before, which is used to fire a fetch data to the backend
 // its like when some body signs in and signs out we want to aware that somebody signs in 
   componentDidMount() {
+    const {setCurrentUser} = this.props;
+
       // this.setState({currentUser: user});
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
+          setCurrentUser({
+          
               id: snapShot.id,
               ...snapShot.data()
-            }
+            
           });
-
-          console.log(this.state);
         });
       }
 
-      this.setState({ currentUser: userAuth });
+      setCurrentUser(userAuth);
     });
   }
 
@@ -58,7 +52,7 @@ class App extends React.Component {
     //function App() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header/>
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
@@ -69,4 +63,23 @@ class App extends React.Component {
   }
 }
 
-export default App;
+
+const mapDispatchToProps = dispatch => ({ 
+
+  // setCurrentUser goes to the function that gets the user object, then calls dispatch which dispath the action object
+  // dispatch get the action object that i pass to root reducer
+    setCurrentUser: user => dispatch(setCurrentUser(user))
+  
+  }); 
+
+
+
+// here app does not need  user any more 
+
+// we pass 1st argument as null bcz we dont need any state to props from our reducer to currentuser here
+// The 2n d argument is the mapDispatchToProps
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
