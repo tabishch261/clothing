@@ -12,6 +12,7 @@ import {addItemToCart} from './cart.utils';
               ...state,
               hidden: !state.hidden
             };
+            
           case CartActionTypes.ADD_ITEM:
             return { // whenever the new action comes in we return the new state of our overall cart reducer
               ...state,

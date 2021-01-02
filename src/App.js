@@ -1,17 +1,25 @@
 
 import React from 'react';
 import './App.css';
-import HomePage from './pages/homepage/homepagecomponent';
-import './pages/homepage/homepage.styles.scss';
-import { Switch, Route, Link , Redirect}  from 'react-router-dom';
+
+
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
+import HomePage from './pages/homepage/homepagecomponent';
+import './pages/homepage/homepage.styles.scss';
+import CheckoutPage from './pages/checkout/checkout.component';
+
+import { Switch, Route, Link , Redirect}  from 'react-router-dom';
 
 import { setCurrentUser } from './redux/user/user.actions'
 import { connect } from 'react-redux';
+import { selectCurrentUser } from './redux/user/user.selectors';
+import { createStructuredSelector} from 'reselect';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'; // used to authenticate user that logged in
+
+
 
 class App extends React.Component {
 
@@ -56,6 +64,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
+          <Route exact path='/checkout' component={CheckoutPage} />
           <Route path='/signin' render={ () => this.props.currentUser ? (< Redirect to= '/'/>) : (<SignInAndSignUpPage/>) } /> 
         </Switch>
       </div>
@@ -72,9 +81,10 @@ const mapDispatchToProps = dispatch => ({
   
   }); 
 
-// to user current user above for functionality that if it already signed in then it redirects to home page  
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+// CreatestructuredSelector will automatically pass our top level state that we get as our mapstatetoprop into each subsequent selector
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+
 });
 
 

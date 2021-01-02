@@ -7,6 +7,11 @@ import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropDown from '../cart-dropdown/cart-dropdown.component';
 import { connect } from  'react-redux'; // connect is the higher order component that let our component to have access things related to redux
 
+import { createStructuredSelector} from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import {  selectCartHidden } from '../../redux/cart/cart.selectors';
+
+
 const Header = ({ currentUser, hidden }) => (
 
     <div className = 'header'>
@@ -30,11 +35,17 @@ const Header = ({ currentUser, hidden }) => (
 
 // the state is the root reducer
 
-const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => ({
-    currentUser,
-    hidden
-});
+// const mapStateToProps = (state) => ({
+//     currentUser: selectCurrentUser(state),
+//     hidden: selectCartHidden(state)
+// });
 
+// CreatestructuredSelector will automatically pass our top level state that we get as our mapstatetoprop into each subsequent selector
+
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden
+});
 
 // here we pass the two functions the 2nd one will be the optional
 // connect is the function that allows us to access the state
