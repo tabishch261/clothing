@@ -1,55 +1,16 @@
 import React from 'react';
 
+import  {connect} from 'react-redux';
+
 import MenuItem from '../menu-item/menu-item.component';
 import './directory.styles.scss';
 
-// This JSX need to become the class component beacuse we do need to pass the state of the menu items
+import { createStructuredSelector } from 'reselect';
+import {selectDirectorySections} from '../../redux/directory/directory.selectors';
 
-class Directory extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            sections : [
-                {
-                  title: 'hats',
-                  imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-                  id: 1,
-                  linkUrl: 'shop/hats'
+// here we pull the sections of props that we get in from the directory reducer
+const Directory = ( {sections} ) => (
 
-                },
-                {
-                  title: 'jackets',
-                  imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
-                  id: 2,
-                  linkUrl: 'shop/jackets'
-                },
-                {
-                  title: 'sneakers',
-                  imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
-                  id: 3,
-                  linkUrl: 'shop/sneakers'
-                },
-                {
-                  title: 'womens',
-                  imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
-                  id: 4,
-                  size : 'large',
-                  linkUrl: 'shop/womens'
-                },
-                {
-                  title: 'mens',
-                  imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
-                  id: 5,
-                  size : 'large',
-                  linkUrl: 'shop/mens'
-                }
-            ]
-              
-        }
-    }
-
-render() {
-    return ( 
       
         // <div className = 'directory-menu'>
         //     {// Want to map through our sections, And we want to pass sections into our menu items so tha
@@ -61,13 +22,17 @@ render() {
         <div className = 'directory-menu'>
             {// Want to map through our sections, And we want to pass sections into our menu items so tha
             // it will create our menu item, 
-                this.state.sections.map( ( {id, ...otherSectionProps}) => ( <MenuItem key = {id} {...otherSectionProps} /> ))                            
+              sections.map( ( {id, ...otherSectionProps}) => ( <MenuItem key = {id} {...otherSectionProps} /> ))     
+
             }
         </div>
 
 
-        )
-    }
-}
+        );
 
-export default Directory; 
+
+        const mapStateToProps = createStructuredSelector({
+          sections: selectDirectorySections //  selectDirectorySections we set in the directory selectors
+        });
+        
+        export default connect(mapStateToProps)(Directory);

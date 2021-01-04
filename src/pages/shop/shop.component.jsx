@@ -1,24 +1,21 @@
 import React from 'react';
+   
+import { Route } from 'react-router-dom';
+import CollectionPage from '../collection/collection.component'
+import  CollectionsOverview from '../../components/collections-overview/collections-overview.component';
 
-import SHOP_DATA from './shop.data.js';
-import CollectionPreview from '../../components/preview-collection/collection-preview.component'
+// app js pass objects to component as props (match, location and history)
+const ShopPage =  ({match }) => {
+    console.log(match);  // to see what match actually give us back - So match is /shop
+    return(
 
-class ShopPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            collections: SHOP_DATA
-        }
-    }
+    <div className = 'shop-page'> 
+    
+        <Route exact path = { `${match.path}` } component = {CollectionsOverview} />
+        <Route  path = { `${match.path}/:collectionId` } component = {CollectionPage} />
+    </div>
+)};
 
-render ()   {
-    const {collections} = this.state;
-    return (<div className = 'shop-page'> 
-    {
-        collections.map( ({id, ...OtherCollectionProps}) => (< CollectionPreview key = {id} {...OtherCollectionProps} />))      
-    }
-    </div>);
-}
-}
 
-export default ShopPage;
+
+  export default ShopPage;

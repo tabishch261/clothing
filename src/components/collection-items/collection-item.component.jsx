@@ -22,9 +22,9 @@ return (
     </div>
 
 )};
-
+// to dispatch new add item, when ever there is add item it get an item
 const mapDispatchToProps = dispatch => ({
-    addItem: item => dispatch(addItem(item)) // to dispatch new add item, when ever there is add item it get an item
+    addItem: item => dispatch(addItem(item)) 
   });
   
   export default connect(
