@@ -17,14 +17,14 @@ const CollectionPage = ({ collection }) => {
       <h2 className='title'>{title}</h2>
       <div className='items'>
         {items.map(item => (
-          <CollectionItem key={item.id} item={item} />
+          <CollectionItem key={item.id} item={item} />  
         ))}
       </div>
     </div>
   );
 };
 
-
+// shop takes us to the actual component
 // state and props of our own component
 const mapStateToProps = (state, ownProps) => ({
   collection: selectCollection(ownProps.match.params.collectionId)(state)  // this is necessary beacuse unlike other selectors, this selector needs a part of the state depending on the URL parameter
