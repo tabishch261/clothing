@@ -1,7 +1,7 @@
 import React from 'react';
 import Directory from '../../components/directory/directory.component';
-import './homepage.styles.scss';
-
+//import './homepage.styles.scss';
+import  { HomePageContainer } from './homepage.styles';
 // Funtional Component
 
 const HomePage = () => (
@@ -11,9 +11,9 @@ const HomePage = () => (
 // inside the menu item there is another content container
 
 // here we can pass the prop history into our directory, then pass that history into our menu item
-<div className = 'HomePage'>
+<HomePageContainer>
     <Directory/>
-</div>
+</HomePageContainer>
 
 );
 

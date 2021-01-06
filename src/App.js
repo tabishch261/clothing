@@ -29,15 +29,17 @@ class App extends React.Component {
 // how we fetch data before, which is used to fire a fetch data to the backend
 // its like when some body signs in and signs out we want to aware that somebody signs in 
   componentDidMount() {
-    const {setCurrentUser} = this.props;
+    const { setCurrentUser } = this.props;
 
       // this.setState({currentUser: user});
+      // When authentication changes means when somebody login, the authentication will 
+      //- store that user information and it will assign the user id (UID), 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
+        const userRef = await createUserProfileDocument(userAuth); // userauth object is used to querry the database (go to firebase utils)
 
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
+        userRef.onSnapshot(snapShot => { // when ever the snap shot changes like set value, updated or deleted the value it pass the snapshot into the listener
+          setCurrentUser({ // it used to set the actual current user object in the redux creater 
           
               id: snapShot.id,
               ...snapShot.data()
@@ -47,6 +49,7 @@ class App extends React.Component {
       }
 
       setCurrentUser(userAuth);
+     // addCollectionAndDocuments('collections', collectionsArray.map( ({title, items}) => ({title, items}) )); // passing collection array to add it to the database
     });
   }
 
@@ -84,6 +87,7 @@ const mapDispatchToProps = dispatch => ({
 // CreatestructuredSelector will automatically pass our top level state that we get as our mapstatetoprop into each subsequent selector
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+ // collectionsArray: selectCollectionsForPreview // once dataset is loaded there is no reason to keep code
 
 });
 
